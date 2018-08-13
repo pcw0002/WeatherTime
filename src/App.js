@@ -5,7 +5,13 @@ import '../node_modules/bootstrap/dist/css/bootstrap.css'
 import CitySearchContainer from './js/components/CitySearch/CitySearchContainer'
 import WeatherPaneContainer from './js/components/WeatherPane/WeatherPaneContainer'
 
+import configureStore from './js/store/configureStore'
+import {Provider} from 'react-redux'
+
+const store = configureStore();
+
 class App extends Component {
+
   render() {
     return (
       <div className="App">

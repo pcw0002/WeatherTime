@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import CitySearch from './CitySearch'
-import WeatherPaneContainer from '../WeatherPane/WeatherPaneContainer'
+import {connect} from 'react-redux';  
+import {bindActionCreators} from 'redux';  
+
+import {SetCityData} from '../../store/web/CitySelect/actions'
 
 
 class CitySearchContainer extends Component {
@@ -12,21 +15,13 @@ class CitySearchContainer extends Component {
             labelKey: option => `${option.name}, ${option.country}`,
             placeholder: 'Search for a City...',
             onChange: (selected) => {
-                this.setState({
-                    selectedCity: selected
-                })
+                console.log("Calling set City", selected);
+                this.props.SetCityData(selected)
             },
-            selectedCity: {
-                "id": 4049979,
-                "name": "Birmingham",
-                "country": "US",
-                "coord": {
-                  "lon": -86.80249,
-                  "lat": 33.52066
-                }
+            selectedCity: this.props.selectedCity
             }
         }
-    }
+    
 
     componentDidMount() {
         axios.get("http://localhost:3000/cityList.json")
@@ -60,4 +55,15 @@ class CitySearchContainer extends Component {
     }
 }
 
-export default CitySearchContainer
+const mapStateToProps = (state) => ({
+
+})
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        SetCityData: SetCityData
+    }, dispatch);
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(CitySearchContainer)
