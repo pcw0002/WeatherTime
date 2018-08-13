@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import CitySearch from './CitySearch'
+import WeatherPaneContainer from '../WeatherPane/WeatherPaneContainer'
 
 
 class CitySearchContainer extends Component {
@@ -11,7 +12,9 @@ class CitySearchContainer extends Component {
             labelKey: option => `${option.name}, ${option.country}`,
             placeholder: 'Search for a City...',
             onChange: (selected) => {
-                console.log("Selected City", selected)
+                this.setState({
+                    selectedCity: selected
+                })
             },
             selectedCity: {
                 "id": 4049979,
@@ -29,11 +32,8 @@ class CitySearchContainer extends Component {
         axios.get("http://localhost:3000/cityList.json")
         
             .then( res => {
-                console.log("Res", res);
                 this.setState({
                     cityList: res.data
-                }, () => {
-                    console.log("City List set", this.state)
                 })
 
             })
@@ -43,7 +43,6 @@ class CitySearchContainer extends Component {
     }
 
     render(){
-        console.log("this container", this)
         return (
             <div className={"container-fluid"}>
                 <div className={"row"}>
