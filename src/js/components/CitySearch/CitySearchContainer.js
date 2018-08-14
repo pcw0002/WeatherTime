@@ -3,6 +3,7 @@ import axios from 'axios';
 import CitySearch from './CitySearch'
 import {connect} from 'react-redux';  
 import {bindActionCreators} from 'redux';  
+import _ from 'lodash'
 
 import {SetCityData} from '../../store/web/CitySelect/actions'
 
@@ -15,12 +16,12 @@ class CitySearchContainer extends Component {
             labelKey: option => `${option.name}, ${option.country}`,
             placeholder: 'Search for a City...',
             onChange: (selected) => {
-                console.log("Calling set City", selected);
-                this.props.SetCityData(selected)
-            },
-            selectedCity: this.props.selectedCity
+                if (!_.isNil(selected)) {
+                    this.props.SetCityData(selected)
+                }
             }
         }
+    }
     
 
     componentDidMount() {
@@ -39,16 +40,14 @@ class CitySearchContainer extends Component {
 
     render(){
         return (
-            <div className={"container-fluid"}>
-                <div className={"row"}>
-                    <div className={"col-lg-4 offset-lg-4"}>
-                        <CitySearch
-                            options={this.state.cityList}
-                            labelKey={this.state.labelKey}
-                            onChange={this.state.onChange}
-                            placeholder={this.state.placeholder}
-                        />
-                    </div>
+            <div className={"row"}>
+                <div className={"col-lg-4 offset-lg-4"}>
+                    <CitySearch
+                        options={this.state.cityList}
+                        labelKey={this.state.labelKey}
+                        onChange={this.state.onChange}
+                        placeholder={this.state.placeholder}
+                    />
                 </div>
             </div>
         )
