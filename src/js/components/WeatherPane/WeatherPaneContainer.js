@@ -1,49 +1,70 @@
 import React, {Component} from 'react'
-import axios from 'axios'
+import {connect} from 'react-redux';  
+import {bindActionCreators} from 'redux';
 import _ from 'lodash'
 import moment from 'moment'
 
-import {API_KEY} from '../../../utils/constants'
+import WeatherPane from './WeatherPane'
 
 
 class WeatherPaneContainer extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            cityData: {},
-            groupedWeather: {}
-        }
-    }
-
-    _groupWeather = (data) => {
-         _.map(data.list, (weather) => {
-           return weather.groupableDate = moment(weather.dt_txt, "YYYY-MM-DD HH:mm:ss").format("MM/DD/YYYY")
-        })
-
-        return _.groupBy(data.list, "groupableDate")
-    }
-
-    componentWillReceiveProps(nextProps) {
-        //Instead of checking to see if nextProps === this.props and not updating
-        //the weather if the props are the same, I decided to always update the weather
-        //so that the user sees the most up to date forecast for the selected city
-        let url = `https://api.openweathermap.org/data/2.5/forecast?id=${nextProps.selectedCity.id}&appid=${API_KEY}`
-
-        axios.get(url)
-            .then( res => {
-                this.setState({
-                    groupedWeather: this._groupWeather(res.data),
-                    cityData: res.data.city
-                })
-            })
-    }
-
+    
     render() {
-        return (
-            <div>Weather </div>
-        )
+        let {weatherInfo} = this.props
+        if (!_.isEmpty(weatherInfo)) {
+            return (
+                <div className={"row paneContainer"}>
+                    <div className={"col-lg-1"}>
+                    </div>
+                        {_.map(weatherInfo, (dailyWeather, index) => {
+                            return this.renderWeatherPane(dailyWeather[0], index)
+                        })}
+                    <div className={"col-lg-1"}>
+                    </div>
+                </div>
+            )
+        } else {
+            return (null)
+        }
+        
+    }
+
+    renderDetailedWeather = (index) =>  {
+        let {weatherInfo} = this.props
+    }
+
+    renderWeatherPane = (weatherInfo, index) => {
+        if(!_.isNil(weatherInfo)) {
+            return (
+                <div className={"col-lg-2"} key={index}>
+                    <WeatherPane 
+                        icon={`https://openweathermap.org/img/w/${weatherInfo.weather[0].icon}.png`}
+                        date={moment(weatherInfo.dt_txt, "YYYY-MM-DD HH:mm:ss").format("dddd, MMMM Do YYYY, h:mm:ss a")}
+                        weather={weatherInfo.weather[0].main}
+                        weatherDescription={weatherInfo.weather[0].description}
+                        onClick={() => this.renderDetailedWeather(index)}
+                    />
+                </div>
+            )
+        } else {
+            return(null)
+        }
+        
     }
 }
 
 
-export default WeatherPaneContainer
+
+const mapStateToProps = (state) => ({
+    cityInfo: state.City,
+    weatherInfo: state.Weather
+})
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+
+    }, dispatch)
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(WeatherPaneContainer)

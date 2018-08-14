@@ -14,16 +14,18 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to Weather Time</h1>
-        </header>
-        <div className={"container-fluid"} >
-          <CitySearchContainer />
-          <WeatherPaneContainer />
+      <Provider store={store}>
+        <div className="App">
+          <header className="App-header">
+            <img src={logo} className="App-logo" alt="logo" />
+            <h1 className="App-title">Welcome to Weather Time</h1>
+          </header>
+          <div className={"container-fluid"} >
+            <CitySearchContainer />
+            <WeatherPaneContainer />
+          </div>
         </div>
-      </div>
+      </Provider>
     );
   }
 }
