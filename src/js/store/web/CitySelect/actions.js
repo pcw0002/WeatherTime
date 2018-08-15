@@ -42,7 +42,6 @@ function _groupWeather(data) {
    })
 
    let groupedData = _.groupBy(data.list, "groupableDate")
-   console.log("GroupedData", groupedData);
    let groupArray = []
    _.forEach(groupedData, (item) => {
         groupArray.push(item)

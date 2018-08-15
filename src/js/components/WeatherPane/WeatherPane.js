@@ -1,6 +1,8 @@
 import React from 'react'
 import {Thumbnail} from 'react-bootstrap'
 
+import {kelvinToFar} from '../../../utils/tempConversion' 
+
 const WeatherPane = props => 
     
     <div>
@@ -11,6 +13,7 @@ const WeatherPane = props =>
         >
             <p>{props.date}</p>
             <p>{props.weather} - {props.weatherDescription}</p>
+            <p>{kelvinToFar(props.temp)}° F </p>
         </Thumbnail>
     </div> 
 
