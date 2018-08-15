@@ -5,21 +5,36 @@ import _ from 'lodash'
 import moment from 'moment'
 
 import WeatherPane from './WeatherPane'
-
+import ExtendedWeather from '../Modal/ExtendedWeather'
 
 class WeatherPaneContainer extends Component {
+
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            showExtended: false
+        }
+    }
     
     render() {
         let {weatherInfo} = this.props
         if (!_.isEmpty(weatherInfo)) {
             return (
-                <div className={"row paneContainer"}>
-                    <div className={"col-lg-1"}>
+                <div>
+                    <div className={"row paneContainer"}>
+                        <div className={"col-lg-1"}>
+                        </div>
+                        {this.state.showExtended 
+                            ? <ExtendedWeather onClick={this.closeExtendedWeather} weather={this.state.extendedWeather} renderWeather={this.renderWeatherPane}/>
+                            : _.map(weatherInfo, (dailyWeather, index) => {
+                                return this.renderWeatherPane(dailyWeather[0], index)
+                            }) }
+                            
+                        <div className={"col-lg-1"}>
+                        </div>
                     </div>
-                        {_.map(weatherInfo, (dailyWeather, index) => {
-                            return this.renderWeatherPane(dailyWeather[0], index)
-                        })}
-                    <div className={"col-lg-1"}>
+                    <div className={"row"}>
                     </div>
                 </div>
             )
@@ -31,6 +46,12 @@ class WeatherPaneContainer extends Component {
 
     renderDetailedWeather = (index) =>  {
         let {weatherInfo} = this.props
+        this.setState({
+            showExtended: true,
+            extendedWeather: weatherInfo[index]
+        }, () => {
+            console.log("Callback in show modal called", this.state)
+        })
     }
 
     renderWeatherPane = (weatherInfo, index) => {
@@ -50,6 +71,12 @@ class WeatherPaneContainer extends Component {
             return(null)
         }
         
+    }
+
+    closeExtendedWeather = () => {
+        this.setState({
+            showExtended: false
+        })
     }
 }
 
