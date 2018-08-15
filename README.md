@@ -1,7 +1,7 @@
 # WeatherTime
 
-Steps to Install/Run
-1.) Clone repository
-2.) run yarn install
-3.) run yarn start
+Steps to Install/Run </br>
+1.) Clone repository </br>
+2.) run yarn install </br>
+3.) run yarn start </br>
 4.) open http://localhost:300
