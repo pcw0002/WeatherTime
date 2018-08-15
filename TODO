@@ -1,0 +1,5 @@
+Todo list: 
+
+1.) Unit Tests (important) 
+2.) Implement redux-persist for storing selected City between visits (or store city data in local storage)  
+3.) Implement a small node.js api server to speed up the city search  
