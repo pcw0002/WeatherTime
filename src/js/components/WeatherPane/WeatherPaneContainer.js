@@ -16,6 +16,14 @@ class WeatherPaneContainer extends Component {
             showExtended: false
         }
     }
+
+    componentWillReceiveProps(nextProps) {
+        //If the component receives new props (The user changes cities) then we need
+        // to hide the extended weather.
+        this.setState({
+            showExtended: false
+        })
+    }
     
     render() {
         let {weatherInfo} = this.props
@@ -26,7 +34,12 @@ class WeatherPaneContainer extends Component {
                         <div className={"col-lg-1"}>
                         </div>
                         {this.state.showExtended 
-                            ? <ExtendedWeather onClick={this.closeExtendedWeather} weather={this.state.extendedWeather} renderWeather={this.renderWeatherPane}/>
+                            ? <ExtendedWeather 
+                                onClick={this.closeExtendedWeather} 
+                                weather={this.state.extendedWeather} 
+                                renderWeather={this.renderWeatherPane}
+                                cityInfo={this.props.cityInfo}
+                              />
                             : _.map(weatherInfo, (dailyWeather, index) => {
                                 return this.renderWeatherPane(dailyWeather[0], index)
                             }) }
@@ -49,8 +62,7 @@ class WeatherPaneContainer extends Component {
         this.setState({
             showExtended: true,
             extendedWeather: weatherInfo[index]
-        }, () => {
-            console.log("Callback in show modal called", this.state)
+
         })
     }
 
@@ -64,6 +76,7 @@ class WeatherPaneContainer extends Component {
                         weather={weatherInfo.weather[0].main}
                         weatherDescription={weatherInfo.weather[0].description}
                         onClick={() => this.renderDetailedWeather(index)}
+                        temp={weatherInfo.main.temp}
                     />
                 </div>
             )
