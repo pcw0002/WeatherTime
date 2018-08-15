@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button, Modal} from 'react-bootstrap'
+import {Button} from 'react-bootstrap'
 import _ from 'lodash'
 import moment from 'moment'
 
@@ -19,7 +19,7 @@ const ExtendedWeather = props =>
         <div className={"row paneContainer"}>
             {_.map(props.weather, (hourlyWeather, index) => {
                 return (
-                    <div className={"col-lg-3"}>
+                    <div className={"col-lg-3"} key={index}>
                         <WeatherPane
                             icon={`https://openweathermap.org/img/w/${hourlyWeather.weather[0].icon}.png`}
                             date={moment(hourlyWeather.dt_txt, "YYYY-MM-DD HH:mm:ss").format("dddd, MMMM Do YYYY, h:mm:ss a")}
